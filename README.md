@@ -38,7 +38,7 @@ To add a new QR code redirect:
    ```
    https://notrack-qr-tracker.vercel.app/scan?id=your_id
    ```
-   Replace `twoje_id` with the key you added to the `REDIRECTS` map.
+   Replace `your_id` with the key you added to the `REDIRECTS` map.
 
 After scanning, the user will be redirected to the corresponding address.
 
