@@ -1,17 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Loader from "../components/Loader/Loader";
 
+// Mapa przekierowań
+const REDIRECTS: Record<string, string> = {
+  centrumautomatyki: "https://centrumautomatyki.com.pl/",
+  nokode: "https://nokode.eu/",
+};
+
 function ScanPageInner() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
     const trackScan = async () => {
-      if (!id) return;
+      if (!id || !REDIRECTS[id]) {
+        setNotFound(true);
+        return;
+      }
 
       try {
         const res = await fetch(`/api/qr?id=${id}`, {
@@ -19,18 +29,28 @@ function ScanPageInner() {
         });
 
         if (!res.ok) {
-          console.error("Błąd serwera podczas zapisu skanu");
+          setNotFound(true);
           return;
         }
 
-        window.location.href = "https://centrumautomatyki.com.pl/";
+        window.location.href = REDIRECTS[id];
       } catch (error) {
-        console.error("Błąd przy zapisie skanu", error);
+        setNotFound(true);
       }
     };
 
     trackScan();
   }, [id]);
+
+  if (notFound) {
+    return (
+      <div className="flex flex-col items-center justify-center mt-16">
+        <span className="text-white text-lg font-semibold">
+          Nie znaleziono strony docelowej dla tego kodu QR.
+        </span>
+      </div>
+    );
+  }
 
   return <Loader />;
 }
