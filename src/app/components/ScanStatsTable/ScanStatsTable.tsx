@@ -30,41 +30,53 @@ const ScanStatsTable = () => {
   }, []);
 
   return (
-    <section className="max-w-xl mx-auto p-8 font-sans">
-      <h2 className="text-2xl font-semibold mb-4">
+    <section className="max-w-lg mx-auto mt-10 p-8 bg-white/10 rounded-2xl shadow-xl backdrop-blur-md border border-white/20 font-sans">
+      <h2 className="text-3xl font-bold mb-6 text-center text-white drop-shadow">
         Statystyki zeskanowanych kodów QR
       </h2>
 
-      {loading && <p>Ładowanie danych...</p>}
-      {error && <p className="text-red-600">Wystąpił błąd: {error}</p>}
-
-      {!loading && !error && (
-        <table className="min-w-full border border-gray-300 rounded-lg overflow-hidden">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="py-2 px-4 border-b border-gray-300 text-left">
-                ID
-              </th>
-              <th className="py-2 px-4 border-b border-gray-300 text-left">
-                Liczba zeskanowań
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="hover:bg-gray-50">
-              <td className="py-2 px-4 border-b border-gray-300">qr</td>
-              <td className="py-2 px-4 border-b border-gray-300">{count}</td>
-            </tr>
-          </tbody>
-        </table>
+      {loading && (
+        <p className="text-center text-gray-200">Ładowanie danych...</p>
+      )}
+      {error && (
+        <p className="text-center text-red-400 font-semibold">{error}</p>
       )}
 
-      <button
-        onClick={fetchCount}
-        className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-      >
-        Odśwież dane
-      </button>
+      {!loading && !error && (
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white/80">
+            <thead>
+              <tr>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold bg-gray-100 rounded-tl-xl">
+                  ID
+                </th>
+                <th className="py-3 px-6 text-left text-gray-700 font-semibold bg-gray-100 rounded-tr-xl">
+                  Liczba zeskanowań
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="hover:bg-blue-50 transition">
+                <td className="py-3 px-6 border-b border-gray-200 font-mono text-gray-800">
+                  qr
+                </td>
+                <td className="py-3 px-6 border-b border-gray-200 font-bold text-blue-700 text-lg">
+                  {count}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <div className="flex justify-center">
+        <button
+          onClick={fetchCount}
+          className="mt-8 px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition"
+        >
+          Odśwież dane
+        </button>
+      </div>
     </section>
   );
 };
