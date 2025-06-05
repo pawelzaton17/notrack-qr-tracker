@@ -31,12 +31,12 @@ To add a new QR code redirect:
    const REDIRECTS: Record<string, string> = {
      centrumautomatyki: "https://centrumautomatyki.com.pl/",
      nokode: "https://nokode.eu/",
-     twoje_id: "https://twojastrona.pl/",
+     your_id: "https://twojastrona.pl/",
    };
    ```
 2. **Generate a QR code** with a URL in the format:
    ```
-   https://notrack-qr-tracker.vercel.app/scan?id=twoje_id
+   https://notrack-qr-tracker.vercel.app/scan?id=your_id
    ```
    Replace `twoje_id` with the key you added to the `REDIRECTS` map.
 
