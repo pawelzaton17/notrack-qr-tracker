@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import Loader from "../components/Loader/Loader";
 
-// Mapa przekierowań
+// Redir Map
 const REDIRECTS: Record<string, string> = {
   centrumautomatyki: "https://centrumautomatyki.com.pl/",
   nokode: "https://nokode.eu/",
@@ -34,7 +34,7 @@ function ScanPageInner() {
         }
 
         window.location.href = REDIRECTS[id];
-      } catch (error) {
+      } catch {
         setNotFound(true);
       }
     };
