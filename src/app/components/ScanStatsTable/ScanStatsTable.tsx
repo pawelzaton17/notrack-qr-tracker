@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-export default function ScanStatsTable() {
+const ScanStatsTable = () => {
   const [count, setCount] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  async function fetchCount() {
+  const fetchCount = async () => {
     setLoading(true);
     setError(null);
     try {
@@ -15,11 +15,15 @@ export default function ScanStatsTable() {
       if (!res.ok) throw new Error("Błąd sieci");
       const data = await res.json();
       setCount(data.count);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("Wystąpił nieznany błąd");
+      }
     }
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     fetchCount();
@@ -63,4 +67,6 @@ export default function ScanStatsTable() {
       </button>
     </section>
   );
-}
+};
+
+export default ScanStatsTable;

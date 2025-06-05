@@ -6,19 +6,20 @@ import { useSearchParams } from "next/navigation";
 export default function ScanPage() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const secret = searchParams.get("secret");
 
   useEffect(() => {
     const trackScan = async () => {
-      if (!id || !secret) return;
+      if (!id) return;
 
       try {
-        await fetch(`/api/track?id=${id}`, {
+        const res = await fetch(`/api/qr?id=${id}`, {
           method: "POST",
-          headers: {
-            Authorization: `Bearer ${secret}`,
-          },
         });
+
+        if (!res.ok) {
+          console.error("Błąd serwera podczas zapisu skanu");
+          return;
+        }
 
         window.location.href = "https://centrumautomatyki.com.pl/";
       } catch (error) {
@@ -27,7 +28,7 @@ export default function ScanPage() {
     };
 
     trackScan();
-  }, [id, secret]);
+  }, [id]);
 
   return <p className="text-center mt-10">Przekierowywanie...</p>;
 }

@@ -1,22 +1,11 @@
 import { NextResponse } from "next/server";
 import { supabase } from "../../../../lib/supabaseClient";
 
-const API_SECRET = process.env.API_SECRET_KEY;
-
-function checkAuth(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  return authHeader === `Bearer ${API_SECRET}`;
-}
-
 function getQueryParam(url: string, param: string) {
   return new URL(url).searchParams.get(param);
 }
 
 export async function GET(request: Request) {
-  if (!checkAuth(request)) {
-    return NextResponse.json({ error: "Brak autoryzacji" }, { status: 401 });
-  }
-
   const id = getQueryParam(request.url, "id") ?? "qr";
 
   const { data, error } = await supabase
@@ -34,10 +23,6 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!checkAuth(request)) {
-    return NextResponse.json({ error: "Brak autoryzacji" }, { status: 401 });
-  }
-
   const id = getQueryParam(request.url, "id") ?? "qr";
 
   const { data: existing, error: selectError } = await supabase
