@@ -15,6 +15,7 @@ export async function GET(request: Request) {
     .single();
 
   if (error && error.code !== "PGRST116") {
+    console.error("Supabase GET error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
@@ -32,6 +33,7 @@ export async function POST(request: Request) {
     .single();
 
   if (selectError && selectError.code !== "PGRST116") {
+    console.error("Supabase POST select error:", selectError);
     return NextResponse.json({ error: selectError.message }, { status: 500 });
   }
 

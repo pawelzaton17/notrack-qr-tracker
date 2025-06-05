@@ -2,8 +2,9 @@
 
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
-export default function ScanPage() {
+function ScanPageInner() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
@@ -31,4 +32,12 @@ export default function ScanPage() {
   }, [id]);
 
   return <p className="text-center mt-10">Przekierowywanie...</p>;
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense>
+      <ScanPageInner />
+    </Suspense>
+  );
 }
