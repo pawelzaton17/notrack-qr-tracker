@@ -31,7 +31,7 @@ To add a new QR code redirect:
    const REDIRECTS: Record<string, string> = {
      centrumautomatyki: "https://centrumautomatyki.com.pl/",
      nokode: "https://nokode.eu/",
-     your_id: "https://twojastrona.pl/",
+     your_id: "https://yourpage.com/",
    };
    ```
 2. **Generate a QR code** with a URL in the format:
