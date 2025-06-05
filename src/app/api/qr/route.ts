@@ -6,21 +6,34 @@ function getQueryParam(url: string, param: string) {
 }
 
 export async function GET(request: Request) {
-  const id = getQueryParam(request.url, "id") ?? "qr";
+  const id = getQueryParam(request.url, "id");
 
-  const { data, error } = await supabase
-    .from("scans")
-    .select("count")
-    .eq("id", id)
-    .single();
+  if (id) {
+    const { data, error } = await supabase
+      .from("scans")
+      .select("count")
+      .eq("id", id)
+      .single();
 
-  if (error && error.code !== "PGRST116") {
-    console.error("Supabase GET error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    if (error && error.code !== "PGRST116") {
+      console.error("Supabase GET error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const count = data?.count ?? 0;
+    return NextResponse.json({ id, count });
+  } else {
+    const { data, error } = await supabase
+      .from("scans")
+      .select("id, count");
+
+    if (error) {
+      console.error("Supabase GET all error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ scans: data ?? [] });
   }
-
-  const count = data?.count ?? 0;
-  return NextResponse.json({ id, count });
 }
 
 export async function POST(request: Request) {
@@ -55,4 +68,22 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ message: "Skan zapisany!", id });
+}
+
+export async function PATCH(request: Request) {
+  const id = getQueryParam(request.url, "id");
+  if (!id) return NextResponse.json({ error: "Brak id" }, { status: 400 });
+
+  const { count } = await request.json();
+
+  const { error } = await supabase
+    .from("scans")
+    .update({ count })
+    .eq("id", id);
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+
+  return NextResponse.json({ message: "Zresetowano" });
 }

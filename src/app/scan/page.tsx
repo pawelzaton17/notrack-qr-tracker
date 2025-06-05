@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Loader from "../components/Loader/Loader";
 
 function ScanPageInner() {
   const searchParams = useSearchParams();
@@ -31,7 +32,7 @@ function ScanPageInner() {
     trackScan();
   }, [id]);
 
-  return <p className="text-center mt-10">Przekierowywanie...</p>;
+  return <Loader />;
 }
 
 export default function ScanPage() {
