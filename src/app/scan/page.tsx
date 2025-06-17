@@ -9,6 +9,7 @@ import Loader from "../components/Loader/Loader";
 const REDIRECTS: Record<string, string> = {
   centrumautomatyki: "https://centrumautomatyki.com.pl/",
   nokode: "https://nokode.eu/",
+  jozwicki: "https://www.instagram.com/jozwicki_/",
 };
 
 function ScanPageInner() {
